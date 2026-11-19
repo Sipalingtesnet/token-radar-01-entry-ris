@@ -138,7 +138,7 @@ export function parseSnapshot(text: string): Snapshot {
     bySlug.set(p.slug, p);
   }
   return {
-    asOf: obj.asOf as string,
+    asOf: (obj.as_of ?? obj.asOf) as string,
     floorUsd: obj.floorUsd as number,
     protocols,
     watchlist,
