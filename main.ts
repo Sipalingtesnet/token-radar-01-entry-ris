@@ -71,6 +71,9 @@ function copyTree(src: string, dst: string): string[] {
       }
     }
   };
+  // Always create the destination, even when src is empty, so later readers
+  // of dst (e.g. the screenshots validation) never hit ENOENT.
+  mkdirSync(dst, { recursive: true });
   walk("");
   return copied;
 }

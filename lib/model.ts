@@ -301,6 +301,11 @@ export function impliedValue(
 // top of each range is reserved for very large (TVL >= $1B) protocols.
 // ---------------------------------------------------------------------------
 
+/** "$lo–$hi" for a real range, or a single "$lo" when both bounds are equal. */
+function moneyRange(lo: number, hi: number): string {
+  return lo === hi ? `$${lo}` : `$${lo}–$${hi}`;
+}
+
 /** Category-specific middle steps (2 and 3). `top` picks the high end of each range. */
 function categoryActionSteps(p: Protocol, chain: string, top: boolean): [string, string] {
   const name = p.name;
@@ -308,37 +313,37 @@ function categoryActionSteps(p: Protocol, chain: string, top: boolean): [string,
     case "Dexs":
     case "Aggregator":
       return [
-        `Make two or three real swaps a week through ${name}'s own interface on ${chain}, about $${top ? 150 : 50}–$150 each; a few minutes per swap plus small gas.`,
-        `Park a small liquidity position in a flagship ${name} pair on ${chain}, about $${top ? 400 : 150}–$400, and check it weekly; minutes to add, minutes per check.`,
+        `Make two or three real swaps a week through ${name}'s own interface on ${chain}, about ${moneyRange(top ? 150 : 50, 150)} each; a few minutes per swap plus small gas.`,
+        `Park a small liquidity position in a flagship ${name} pair on ${chain}, about ${moneyRange(top ? 400 : 150, 400)}, and check it weekly; minutes to add, minutes per check.`,
       ];
     case "Lending":
       return [
-        `Supply a blue-chip collateral asset to ${name} on ${chain}, about $${top ? 500 : 200}–$500, in ten minutes; keep utilisation low from the start.`,
+        `Supply a blue-chip collateral asset to ${name} on ${chain}, about ${moneyRange(top ? 500 : 200, 500)}, in ten minutes; keep utilisation low from the start.`,
         `Run a careful borrow-and-repay loop on ${name} at low utilisation, repaying within the week; interest costs about $2–$8 and each cycle takes minutes.`,
       ];
     case "Derivatives":
     case "Perps":
     case "Options":
       return [
-        `Open small hedged trades on ${name} (${chain}), about $${top ? 300 : 100}–$300 margin, delta-neutral where possible; twenty minutes to set up.`,
+        `Open small hedged trades on ${name} (${chain}), about ${moneyRange(top ? 300 : 100, 300)} margin, delta-neutral where possible; twenty minutes to set up.`,
         `Repeat on ${name} to a steady weekly volume, closing positions before weekends; funding costs about $2–$10 per week at this size.`,
       ];
     case "Yield":
     case "Yield Aggregator":
       return [
-        `Deposit into ${name}'s flagship vault on ${chain}, about $${top ? 450 : 150}–$450, in ten minutes; note the entry fee and withdrawal rules first.`,
+        `Deposit into ${name}'s flagship vault on ${chain}, about ${moneyRange(top ? 450 : 150, 450)}, in ten minutes; note the entry fee and withdrawal rules first.`,
         `Rotate between two ${name} vaults weekly and harvest rewards; gas runs about $2–$8 per rotation, and each round takes only a few minutes.`,
       ];
     case "Gaming":
     case "NFT":
     case "NFT Marketplace":
       return [
-        `Play or mint through ${name}'s official client, about $${top ? 120 : 30}–$120 of items, across a few sessions a week on ${chain}.`,
+        `Play or mint through ${name}'s official client, about ${moneyRange(top ? 120 : 30, 120)} of items, across a few sessions a week on ${chain}.`,
         `List or trade items around $10–$50 on ${name}'s marketplace and finish seasonal tasks, about an hour a week; note which activities the team highlights.`,
       ];
     default:
       return [
-        `Use ${name}'s core action end-to-end with real funds on ${chain}, about $${top ? 300 : 100}–$300, taking fifteen minutes the first time.`,
+        `Use ${name}'s core action end-to-end with real funds on ${chain}, about ${moneyRange(top ? 300 : 100, 300)}, taking fifteen minutes the first time.`,
         `Repeat weekly so your wallet builds a steady history on ${name}, varying amounts slightly; gas stays about $2–$8 at this size.`,
       ];
   }
